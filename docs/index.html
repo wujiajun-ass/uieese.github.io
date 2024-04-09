@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lightly-PHP-Project</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+   <script>
+// 获取经纬度信息
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("浏览器不支持地理位置功能。");
+    }
+}
+
+// 显示经纬度信息
+function showPosition(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    
+    // 将经纬度信息发送到后端处理
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "process.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // 显示后端返回的结果
+            document.getElementById("result").innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send("latitude=" + latitude + "&longitude=" + longitude);
+}
+
+// 访问摄像头
+function accessCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            document.getElementById('camera').srcObject = stream;
+        })
+        .catch(function(err) {
+            console.log("访问摄像头失败: " + err);
+        });
+}
+</script>
+</head>
+<body>
+<h1>亲爱的网络犯罪者先生你有意图入侵我的后台网站现在开始我要向你发起法律诉讼</h1>
+<h2>你可以选择和我民事协商</h2>
+<h3>qq 552280353</h3>
+<h3>phone: 15571107997</h3>
+<h3>你可以叫我吴佳骏先生</h3>
+<h3>入侵网络设备最高可以判无期徒刑</h3>
+ <p id="ip-address">正在获取用户的 IP 地址...</p>
+  <p id="device-info">正在获取用户的设备信息...</p>
+<h1>已经获取你的经纬度和摄像头</h1>
+<button onclick="getLocation()">你的经纬度</button>
+<button onclick="accessCamera()">你的摄像头</button>
+<video id="camera" autoplay style="width: 320px; height: 240px;"></video>
+ <script>
+    function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("浏览器不支持地理位置功能。");
+    }
+}
+// 显示经纬度信息
+function showPosition(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    
+    // 在页面上显示经纬度信息
+    alert("纬度：" + latitude + "\n经度：" + longitude);
+    
+    // 将经纬度信息发送到后端处理
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "process.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // 显示后端返回的结果
+            document.getElementById("result").innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send("latitude=" + latitude + "&longitude=" + longitude);
+}
+// 访问摄像头
+function accessCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            document.getElementById('camera').srcObject = stream;
+        })
+        .catch(function(err) {
+            console.log("访问摄像头失败: " + err);
+        });
+}
+ function getUserIPAddress() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    // 将 IP 地址插入到页面上的元素中
+                    document.getElementById('ip-address').innerText = '你的 IP 地址: ' + data.ip;
+                })
+                .catch(error => {
+                    console.error('获取 IP 地址时出错:', error);
+                    // 如果出错，显示错误消息
+                    document.getElementById('ip-address').innerText = '获取 IP 地址时出错';
+                });
+        }
+
+        // 调用函数来获取用户的 IP 地址
+        getUserIPAddress();
+
+        function getUserDeviceInfo() {
+            // 获取用户代理字符串
+            var userAgent = navigator.userAgent;
+            
+            // 将设备信息插入到页面上的元素中
+            document.getElementById('device-info').innerText = '你的的设备信息: ' + userAgent;
+        }
+
+        // 调用函数来获取用户的设备信息
+        getUserDeviceInfo();
+    </script>
+</body>
+</html>
